@@ -90,49 +90,51 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         tooltip: 'Scroll to Banana',
-        onPressed: () async {
-          // find the index of fruit to scroll to in fruits
-          // let's scroll to Banana
-          final index = fruits.indexOf('Banana');
-          // get global key of banana
-          final key = _fruitKeys[index];
-          // find the render box of banana
-          var box = key.currentContext?.findRenderObject();
-
-          // if box is not in the view port, scroll to it
-          if (box == null) {
-            // speed to scroll to banana
-            double scrollSpeed;
-            // find the key of the render box which is currently in view
-            var currentKeyIndex = _fruitKeys.indexWhere((element) =>
-                element.currentContext?.findRenderObject() != null);
-            // if currently visible fruit is before fruit to scroll to,
-            // then speed should be negative otherwise positive
-            scrollSpeed = currentKeyIndex > index ? 100 : -100;
-
-            // scroll until render object is found
-            while (box == null) {
-              var offset = _scrollController.offset - scrollSpeed;
-              await _scrollController.animateTo(
-                offset,
-                duration: const Duration(milliseconds: 1),
-                curve: Curves.easeInOut,
-              );
-              box = key.currentContext?.findRenderObject();
-            }
-          }
-
-          _scrollController.position.ensureVisible(
-            box,
-            // How far into view the item should be scrolled (between 0 and 1)
-            // with 1 being the bottom of the view and 0 being the top.
-            alignment: 0.2,
-            duration: const Duration(milliseconds: 200),
-          );
-        },
+        onPressed: _scrollToWidget,
         label: const Text('Scroll to Banana'),
         icon: const Icon(Icons.arrow_upward_rounded),
       ),
+    );
+  }
+
+  void _scrollToWidget() async {
+    // find the index of fruit to scroll to in fruits
+    // let's scroll to Banana
+    final index = fruits.indexOf('Banana');
+    // get global key of banana
+    final key = _fruitKeys[index];
+    // find the render box of banana
+    var box = key.currentContext?.findRenderObject();
+
+    // if box is not in the view port, scroll to it
+    if (box == null) {
+      // speed to scroll to banana
+      double scrollSpeed;
+      // find the key of the render box which is currently in view
+      var currentKeyIndex = _fruitKeys.indexWhere(
+          (element) => element.currentContext?.findRenderObject() != null);
+      // if currently visible fruit is before fruit to scroll to,
+      // then speed should be negative otherwise positive
+      scrollSpeed = currentKeyIndex > index ? 100 : -100;
+
+      // scroll until render object is found
+      while (box == null) {
+        var offset = _scrollController.offset - scrollSpeed;
+        await _scrollController.animateTo(
+          offset,
+          duration: const Duration(milliseconds: 1),
+          curve: Curves.easeInOut,
+        );
+        box = key.currentContext?.findRenderObject();
+      }
+    }
+
+    _scrollController.position.ensureVisible(
+      box,
+      // How far into view the item should be scrolled (between 0 and 1)
+      // with 1 being the bottom of the view and 0 being the top.
+      alignment: 0.2,
+      duration: const Duration(milliseconds: 200),
     );
   }
 }
