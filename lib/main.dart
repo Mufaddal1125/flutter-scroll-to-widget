@@ -11,8 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.yellow,
       ),
       home: const MyHomePage(),
     );
@@ -65,7 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
     'Lime',
     'Lychee',
     'Mandarina',
-    'Mango',
   ];
 
   @override
@@ -79,19 +79,26 @@ class _MyHomePageState extends State<MyHomePage> {
           // assign scroll controller to list view
           controller: _scrollController,
           itemBuilder: (context, index) {
-            return ListTile(
-              // assign key to each item
-              key: _fruitKeys[index],
-              title: Text(fruits[index]),
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(22),
+                color: Colors.yellow,
+              ),
+              child: ListTile(
+                // assign key to each item
+                key: _fruitKeys[index],
+                title: Text(fruits[index]),
+              ),
             );
           },
           itemCount: fruits.length,
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        tooltip: 'Scroll to Banana',
+        tooltip: 'Scroll to Gooseberries',
         onPressed: _scrollToWidget,
-        label: const Text('Scroll to Banana'),
+        label: const Text('Scroll to Gooseberries'),
         icon: const Icon(Icons.arrow_upward_rounded),
       ),
     );
@@ -99,16 +106,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _scrollToWidget() async {
     // find the index of fruit to scroll to in fruits
-    // let's scroll to Banana
-    final index = fruits.indexOf('Banana');
-    // get global key of banana
+    // let's scroll to Gooseberries
+    final index = fruits.indexOf('Gooseberries');
+    // get global key of Gooseberries
     final key = _fruitKeys[index];
-    // find the render box of banana
+    // find the render box of Gooseberries
     var box = key.currentContext?.findRenderObject();
 
     // if box is not in the view port, scroll to it
     if (box == null) {
-      // speed to scroll to banana
+      // speed to scroll to Gooseberries
       double scrollSpeed;
       // find the key of the render box which is currently in view
       var currentKeyIndex = _fruitKeys.indexWhere(
